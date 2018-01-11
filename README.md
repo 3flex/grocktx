@@ -1,6 +1,8 @@
 GrockTX
 =======
 
+[![Build Status](https://travis-ci.org/3flex/grocktx.svg?branch=master)](https://travis-ci.org/3flex/grocktx)
+
 GrockTX is a library for parsing and scraping bank transaction data.  Its
 primary function is to obtain and parse the memo strings that appear on bank
 and credit card statements such as:
