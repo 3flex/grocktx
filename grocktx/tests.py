@@ -3,7 +3,7 @@ import getpass
 import json
 import pprint
 
-import parser, scraper
+import parser
 
 p = parser.parse
 
@@ -221,50 +221,6 @@ class TestParser(unittest.TestCase):
                         channel, memo, actual, goal
                     )
                 )
-
-class TestScraper(unittest.TestCase):
-    def setUp(self):
-        # Hardcode values for usernames and passwords here to avoid prompts.
-        self.credentials = {
-            "wesabe": {
-                "username": None,
-                "password": None,
-            },
-            "mint": {
-                "username": None,
-                "password": None,
-            }
-        }
-        for provider, creds in self.credentials.iteritems():
-            if not (creds['username'] and creds['password']):
-                print "Please provide login details for %s.  You can" \
-                      " hard-code these in the test file to avoid these" \
-                      " prompts." % provider
-
-                if not creds['username']:
-                    creds['username'] = raw_input("Username: ")
-                if not creds['password']:
-                    creds['password'] = getpass.getpass("Password: ")
-
-    def test_scraper(self):
-        """ 
-        It is very difficult to test that transactions were correctly obtained
-        in a generic way.  Thus we just run the scraper and display the results
-        -- any errors that prevent it from running are caught, and errors in
-        functionality can be inspected visually.
-        """
-        for provider, creds in self.credentials.iteritems():
-            print "########################### %s #######################" % provider
-            results = scraper.get_transactions(provider, creds['username'], creds['password'])
-            chan_counts = {}
-            for result in results:
-                chan_counts[result['channel']] = chan_counts.get(result['channel'], 0) + 1
-                if result['channel'] == 'unknown':
-                    print "##! UNKOWN CHANNEL"
-                    pprint.pprint(result)
-            print "Results by channel: "
-            pprint.pprint(chan_counts)
-        
 
 if __name__ == '__main__':
     unittest.main()
